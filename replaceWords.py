@@ -38,7 +38,7 @@ def find_synonyms(word):
             if l.name() not in synonyms and l.name() != word:
                 synonyms.append(l.name())
                 synonym_collection.append(l.name())
-                print("Synonymordbok:"+word + "---> " + str(synonym_collection))
+
 
     if len(synonyms) == 0:
         #print("bruker nynorsk")
@@ -66,7 +66,7 @@ def replace_words_with_synonyms(tokenized_text,percentage):
             synonym_text.append(synonym[0])
             synonyms_put_into_text.append(synonym[0])
             words_replaced = words_replaced + 1
-
+            print("Synonymordbok:"+ word + "---> " + str(synonym[0]))
         else:
             synonym_text.append(word)
     # Replacing remaining words with words from word2vec
@@ -122,18 +122,25 @@ def add_synonyms_to_parts_of_text(tokenized_text,number_of_splits,percentage):
     # Introducing noise to the different fractions of the arrays
     for part_text in array_of_text_parts:
         array_of_text_parts_with_synonyms.append(replace_words_with_synonyms(part_text,percentage))
+
         #sleep(2)
 
     # Making new full tekst with the noise induced fractions included
     full_text_noise_induced_on_parts_array = []
     for i in range(0,len(array_of_text_parts_with_synonyms)):
         temp = array_of_text_parts
-        temp[i] = array_of_text_parts[i]
-        full_text_noise_induced_on_parts_array.append(temp)
-
-        print(array_of_text_parts_with_synonyms[i])
+        #print(temp[i])
+        temp[i] = array_of_text_parts_with_synonyms[i]
+        flat_temp = []
+        for sublist in temp:
+            for item in sublist:
+                flat_temp.append(item)
+        temp_text = ' '.join(flat_temp)
+        #print(array_of_text_parts_with_synonyms[i])
+        full_text_noise_induced_on_parts_array.append(temp_text)
         print(full_text_noise_induced_on_parts_array)
-        break
+
+
 
     return array_of_text_parts_with_synonyms
 if "__main__":
@@ -144,8 +151,12 @@ if "__main__":
     #print(remove_words_from_text(tokenized_text,10))
     #print(remove_parts_of_text(tokenized_text,10))
     #array_of_splits = split_text(test_text, 500)
-    lol = add_synonyms_to_parts_of_text(tokenized_text[:500],1,10)
+    lol = add_synonyms_to_parts_of_text(tokenized_text[:500],10,90)
     print(len(lol))
+    for i in range(0,9):
+        split_file = open("noise_induced_split_"+str(i)+".txt")
+        split_file.write(lol[i])
+        split_file.close()
     #print(get_similar_words_from_word2vec("potet", 'word2vec_w_wiki/full.bin'))
 
     #for text in array_of_splits:
