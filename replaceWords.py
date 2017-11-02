@@ -109,8 +109,13 @@ def remove_words_from_text(tokenized_text, percentage):
     return ' '.join(reduced_text)
 
 def remove_parts_of_text(tokenized_text, percentage):
-    '''Removes a chosen percentage of text from the input-tokenized text and outputs a reduced tokenized string.'''
-    return array_split(tokenized_text,floor(100/percentage))
+    '''Removes a random part of the input-tokenized text, size set by the percentage, and outputs a reduced tokenized text.'''
+    number_of_splits = floor(100/percentage)
+    array_of_text_parts = array_split(tokenized_text, number_of_splits)
+    del array_of_text_parts[random.randint(0, len(array_of_text_parts) - 1)]
+    reduced_array = [item for sublist in array_of_text_parts for item in sublist]
+
+    return reduced_array
 
 def add_words_to_text(tokenized_text, percentage, which_dewey_is_this_from):
     ''' Adds words randomly to text. Words are chosen either from word2vec or tfidf-matrix relevant to the articles dewey. This function returns the modified tokenized_text'''
@@ -154,16 +159,16 @@ if "__main__":
     tokenized_text = word_tokenize(tekst, language="norwegian")
 
     num_splits =1
-    lol = add_synonyms_to_parts_of_text(tokenized_text[:500],1,10)
-    print(len(lol))
-
-    for i in range(0,len(lol)):
-        split_file = open("noise_overall_induced_split_"+str(i)+".txt","w")
-        split_file.write(lol[i])
-        split_file.close()
-
-    print("original_tekst:")
-    print(tokenized_text[:50])
+    #lol = add_synonyms_to_parts_of_text(tokenized_text[:500],1,10)
+    #print(len(lol))
+    remove_parts_of_text(tokenized_text,10)
+    # for i in range(0,len(lol)):
+    #     split_file = open("noise_overall_induced_split_"+str(i)+".txt","w")
+    #     split_file.write(lol[i])
+    #     split_file.close()
+    #
+    # print("original_tekst:")
+    # print(tokenized_text[:50])
 
 
 
