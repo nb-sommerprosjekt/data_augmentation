@@ -4,3 +4,6 @@
 *.idea
 *__pycache__
 *.txt
+*w2v_tgc*
+*corpus
+*artificial_corpus
