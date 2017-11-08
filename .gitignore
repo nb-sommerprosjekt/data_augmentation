@@ -6,4 +6,6 @@
 *.txt
 *w2v_tgc*
 *corpus
-*artificial_corpus
+artificial_corpus*
+*corpus_training_split
+*.zip
